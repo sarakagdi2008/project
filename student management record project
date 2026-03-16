@@ -1,0 +1,60 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+class Student {
+public:
+    int roll;
+    char name[50];
+    float marks;
+
+    void input() {
+        cout << "Enter Roll No: ";
+        cin >> roll;
+        cout << "Enter Name: ";
+        cin >> name;
+        cout << "Enter Marks: ";
+        cin >> marks;
+    }
+
+    void display() {
+        cout << "Roll No: " << roll << endl;
+        cout << "Name: " << name << endl;
+        cout << "Marks: " << marks << endl;
+    }
+};
+
+int main() {
+    Student s;
+    int choice;
+    ofstream fout;
+    ifstream fin;
+
+    while (true) {
+        cout << "\n1.Add Record\n2.View Records\n3.Exit\nEnter Choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            fout.open("student.dat", ios::binary | ios::app);
+            s.input();
+            fout.write((char*)&s, sizeof(s));
+            fout.close();
+        }
+        else if (choice == 2) {
+            fin.open("student.dat", ios::binary);
+            while (fin.read((char*)&s, sizeof(s))) {
+                s.display();
+                cout << endl;
+            }
+            fin.close();
+        }
+        else if (choice == 3) {
+            break;
+        }
+        else {
+            cout << "Invalid Choice\n";
+        }
+    }
+
+    return 0;
+}
